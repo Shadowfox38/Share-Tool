@@ -12,6 +12,10 @@
     "test": "node server.js",
     "start": "node server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Shadowfox38/share-tool.git"
+  },
   "keywords": [
     "share"
   ],
