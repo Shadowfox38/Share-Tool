@@ -5,7 +5,7 @@ const path = require('path');
 const ip = require('ip');
 console.log("Tell your friend to open browser and type this : " + ip.address() + ":8080/");
 console.log("Note :You and your friend need to be connected to same wifi network, internet is not required");
-console.log("If you weren't connected, restart this app(type ctr+c to quit, then run again with node server.js)");
+console.log("If you weren't connected, restart this app to refresh your ip address (press ctrl+c to quit, then run again with node server.js)");
 var app = express();
 var root = "/home/shadowfox",curr_dir = "",whole_path;
 app.use(express.static('public'));
@@ -17,11 +17,13 @@ app.get('*',function(req,res)
   var filePath = q.pathname;
   filePath = unescape(filePath);
   filePath = filePath.split(" ").join("\ ");
-  q = q.search;
-  if(q == '?download')
+  try {
+  if(fs.statSync(root + "/" + filePath).isFile())
     res.download(root + "/" + filePath);
   else
-    res.sendFile(__dirname + '/src/index.html')
+    res.sendFile(__dirname + '/src/index.html');
+  }
+  catch(err){res.sendFile(__dirname + '/src/404.html');}
 });
 app.put('*',function(req,res)
 {

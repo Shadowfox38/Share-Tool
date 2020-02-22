@@ -28,7 +28,7 @@ function getdata(path)
       {
         path = curr_dir + "/" + item;
         path = encodeURIComponent(path);
-        $(".list2").append('<li><a href = "' + path + '?download' + '">' + item + '</a></li>');
+        $(".list2").append('<li><a href = "' + path + '">' + item + '</a></li>');
       });
     }
   }
