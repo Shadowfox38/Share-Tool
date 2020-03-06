@@ -21,7 +21,7 @@ function getdata(path)
       {
         path = curr_dir + "/" + item;
         path = encodeURIComponent(path);
-        $(".list1").append('<li><a href = "' + path + '">' + item + '</a></li>');
+        $(".list1").append('<li><a href = "' + path + '">' + item + '</a> &nbsp &nbsp' + '<a href = "' + path + '?download">' + '<img src = "/static/folder.gif"></img>' + '</a>' +'</li>');
       });
       $(".list2").empty();
       files.forEach(function(item)
@@ -30,6 +30,19 @@ function getdata(path)
         path = encodeURIComponent(path);
         $(".list2").append('<li><a href = "' + path + '">' + item + '</a></li>');
       });
+      /*if(myobj.mode == 1)
+      {
+        console.log("mode is = 1");
+        console.log("length is = " + files.length);
+        var ul = document.getElementsByClassName("list2")[0];
+        var items = ul.getElementsByTagName("a");
+        for(var i=0;i<files.length;i++)
+        {
+          console.log(i);
+          $(items[i]).click();
+        }
+      }
+      */
     }
   }
 }
