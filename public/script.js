@@ -19,14 +19,14 @@ function getdata(path)
       console.log("encodeURIComponent('test?download') = " + encodeURIComponent('test?download'));
       dirs.forEach(function(item)
       {
-        path = curr_dir + "/" + item;
+        path = curr_dir + item;
         path = encodeURIComponent(path);
         $(".list1").append('<li><a href = "' + path + '">' + item + '</a> &nbsp &nbsp' + '<a href = "' + path + '?download">' + '<img src = "/static/folder.gif"></img>' + '</a>' +'</li>');
       });
       $(".list2").empty();
       files.forEach(function(item)
       {
-        path = curr_dir + "/" + item;
+        path = curr_dir + item;
         path = encodeURIComponent(path);
         $(".list2").append('<li><a href = "' + path + '">' + item + '</a></li>');
       });

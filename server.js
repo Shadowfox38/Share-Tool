@@ -4,8 +4,7 @@ const fs = require('fs');
 const url = require('url');
 const path = require('path');
 const ip = require('ip');
-const zipper = require('zip-local');
-const zip = require('express-zip');
+const archiver = require('archiver');
 console.log("Tell your friend to open browser and type this : " + ip.address() + ":8080/");
 var app = express();
 var root = "/home/shadowfox",curr_dir = "",whole_path;
@@ -22,19 +21,14 @@ app.get('*', function(req, res) {
 	{
 		if(q == '?download')
 		{
+			var name = filePath.replace(/.+\//, '');
+			console.log("User is downloading : " + name + " folder ");
+			res.attachment(name+".zip");
+			var zip = archiver('zip');
 			var fpath = path.join(root,filePath);
-			var filestozip = [];
-			fs.readdir(fpath,function(err,data)
-			{
-				data = data.filter(item => !(/(^|\/)\.[^\/\.]/g).test(item));
-				for(var i=0;i<data.length;i++)
-				{
-					var stats = fs.statSync(path.join(fpath,data[i]));
-					if(stats.isFile())
-						filestozip.push({path : path.join(fpath,data[i]),name : data[i]});
-				}
-				res.zip(filestozip);
-			});
+			zip.pipe(res);
+			zip.directory(fpath,'/');
+			zip.finalize();
 		}
 		else if (fs.statSync(path.join(root,filePath)).isFile())
 			res.download(path.join(root,filePath));
@@ -49,7 +43,7 @@ app.get('*', function(req, res) {
 app.put('*', function(req, res)
 {
 	var dirs = [],files = [];
-	curr_dir = req.url;
+	curr_dir = url.parse(req.url,true).pathname;
 	curr_dir = unescape(curr_dir);
 	var xx = curr_dir.split(" ");
 	curr_dir = xx.join("\ ");
@@ -66,6 +60,7 @@ app.put('*', function(req, res)
 			if (stats.isFile())
 				files.push(data[i]);
 		}
+		curr_dir = curr_dir.substring(1);
 		var myobj = {curr_dir,dirs,files};
 		res.send(JSON.stringify(myobj));
 	});
